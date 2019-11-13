@@ -1,0 +1,15 @@
+---
+title: "Simple Website"
+output: html_document
+---
+
+
+# Simple Webiste
+##Cool Web
+###Knitting to do a thing? 
+Practicing along with video. 
+
+```{r }
+
+```
+
