@@ -1,13 +1,19 @@
 ---
-title: "Simple Website"
+title: "Home"
 output: html_document
 ---
 
 
-# Simple Webiste
-##Cool Web
-###Knitting to do a thing? 
-Practicing along with video. 
+###Welcome to my Website 
+
+Here you can see a little about me and view some of the projects I've worked on.
+
+[**About Me**](https://megnn.github.io/AboutMe.html)
+
+[**Beer Case Study**](https://megnn.github.io/CaseStudy.html)
+For reference the above work was done as an exercise as if we were presenting market research to executives at Budweiser.
+
+[**See my first R Shiny App on Beer Data Here**](https://megnn.github.io/AboutMe.html)
 
 ```{r }
 

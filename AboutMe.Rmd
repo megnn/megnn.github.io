@@ -3,10 +3,19 @@ title: "About Me"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
-#About Me
+Name - Megan Riley
+Age - 27 
+Favorite Color - Green
+Located - Foggy San Francisco
+
+I am a current student in SMU's Masters of Data Science Program with an expected graduation date of Summer 2021. 
+I grew up and lived in Arizona until I graduated from Arizona State University and Barrett the Honors College with a Bachelor's in Political Science and certificates in Civic Education and Technical Communication. 
+I moved to the Bay Area with my now husband 2015 and spent four years as a Marketing Assistant for Pearson Education. 
+I now spend most of my time staring at a screen absolutely wrecking my eyes or lurking mysteriously in fog. 
+
+Contact me at megnicoleriley@gmail.com or rileym@smu.mail.edu 
 
 
+
+🐻
