@@ -4,6 +4,8 @@ author: "Megan Riley"
 output: html_document
 ---
 
+Final Youtube Link: https://www.youtube.com/watch?v=2BOSQ9OV5js&feature=youtu.be
+
 #Salary and Attirtion Case Study
 
 The purpose of this document is to build models to predict employee attrition and employee salary for the client Frito Lay. 
@@ -18,16 +20,16 @@ library(caret)
 library(e1071)
 library(class)
 
-train = read_csv("/Users/zmartygirl/data/MSDSR/6306/FinalProject/CaseStudy2-data.csv")
-nosalaryTest = read_csv("/Users/zmartygirl/data/MSDSR/6306/FinalProject/CaseStudy2CompSet No Salary.csv")
-noattritionTest = read.csv("/Users/zmartygirl/data/MSDSR/6306/FinalProject/CaseStudy2CompSet No Attrition.csv")
+train = read_csv("CaseStudy2-data.csv")
+nosalaryTest = read_csv("CaseStudy2CompSet No Salary.csv")
+noattritionTest = read.csv("CaseStudy2CompSet No Attrition.csv")
 
 #Splitting the Data into 80/20 to train and test the model 
 
 #Coding character variables as 0 or 1 and removing them from ds.
 #This data set can be used if we need numeric variables for everything
 trainCoded = dummy_cols(train, select_columns = c( "Attrition", "BusinessTravel", "Department", "EducationField", "Gender", "JobRole", "MaritalStatus", "Over18", "OverTime"), remove_first_dummy = TRUE)
-trainCodedNoChar = trainCoded %>% select(-c( "Attrition", "BusinessTravel", "Department", "EducationField", "Gender", "JobRole", "MaritalStatus", "Over18", "OverTime"))
+trainCodedNoChar = trainCoded
 
 
 #Attrition Model Data
@@ -313,8 +315,8 @@ modelDF %>% ggplot(aes(x = Index,y = Residuals)) + geom_point() + ggtitle("Resid
 
 ```{r}
 
-nosalaryTest = read_csv("/Users/zmartygirl/data/MSDSR/6306/FinalProject/CaseStudy2CompSet No Salary.csv")
-noattritionTest = read.csv("/Users/zmartygirl/data/MSDSR/6306/FinalProject/CaseStudy2CompSet No Attrition.csv")
+nosalaryTest = read_csv("CaseStudy2CompSet No Salary.csv")
+noattritionTest = read.csv("CaseStudy2CompSet No Attrition.csv")
 
 noattritionTest  = noattritionTest %>% mutate(logMonthlyIncome = log(MonthlyIncome))
 
