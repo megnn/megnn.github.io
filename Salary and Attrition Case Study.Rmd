@@ -57,10 +57,10 @@ Below we are building a full model and reduced model built by Step Wise variable
 
 #Building a Faux Linear Model for Attrition, 
 library(MASS)
-full.model <- lm(Attrition_Yes ~., data = trainCodedNoChar )
+#full.model <- lm(Attrition_Yes ~., data = trainCodedNoChar )
 
 #Stepwise Var Selection
-step.model <- stepAIC(full.model, direction = "both",  trace = FALSE)
+#step.model <- stepAIC(full.model, direction = "both",  trace = FALSE)
 summary(step.model)
 
 stepCols = c("Age", "DistanceFromHome", "EnvironmentSatisfaction", "JobInvolvement", "JobSatisfaction",

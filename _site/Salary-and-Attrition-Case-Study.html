@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Megan Riley" />
+
+
+<title>Attrition and Salary Case Study</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="AboutMe.html">About Me</a>
+</li>
+<li>
+  <a href="Salary-and-Attrition-Case-Study.html">Prediction Case Study</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Attrition and Salary Case Study</h1>
+<h4 class="author">Megan Riley</h4>
+
+</div>
+
+
+<p>Final Youtube Link: <a href="https://www.youtube.com/watch?v=2BOSQ9OV5js&amp;feature=youtu.be" class="uri">https://www.youtube.com/watch?v=2BOSQ9OV5js&amp;feature=youtu.be</a></p>
+<div id="salary-and-attirtion-case-study" class="section level1">
+<h1>Salary and Attirtion Case Study</h1>
+<p>The purpose of this document is to build models to predict employee attrition and employee salary for the client Frito Lay.</p>
+<p>First below the training data is opened and organized for various use cases in later models.</p>
+<pre class="r"><code>library(tidyverse)
+library(GGally)
+library(fastDummies)
+library(caret)
+library(e1071)
+library(class)
+
+train = read_csv(&quot;CaseStudy2-data.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   Attrition = col_character(),
+##   BusinessTravel = col_character(),
+##   Department = col_character(),
+##   EducationField = col_character(),
+##   Gender = col_character(),
+##   JobRole = col_character(),
+##   MaritalStatus = col_character(),
+##   Over18 = col_character(),
+##   OverTime = col_character()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>nosalaryTest = read_csv(&quot;CaseStudy2CompSet No Salary.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   Attrition = col_character(),
+##   BusinessTravel = col_character(),
+##   Department = col_character(),
+##   EducationField = col_character(),
+##   Gender = col_character(),
+##   JobRole = col_character(),
+##   MaritalStatus = col_character(),
+##   Over18 = col_character(),
+##   OverTime = col_character()
+## )
+## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>noattritionTest = read.csv(&quot;CaseStudy2CompSet No Attrition.csv&quot;)
+
+#Splitting the Data into 80/20 to train and test the model 
+
+#Coding character variables as 0 or 1 and removing them from ds.
+#This data set can be used if we need numeric variables for everything
+trainCoded = dummy_cols(train, select_columns = c( &quot;Attrition&quot;, &quot;BusinessTravel&quot;, &quot;Department&quot;, &quot;EducationField&quot;, &quot;Gender&quot;, &quot;JobRole&quot;, &quot;MaritalStatus&quot;, &quot;Over18&quot;, &quot;OverTime&quot;), remove_first_dummy = TRUE)
+trainCodedNoChar = trainCoded
+
+
+#Attrition Model Data
+attritionFullTrain = train %&gt;% mutate(logMonthlyIncome = log(MonthlyIncome), 
+                                      ZMonthlyIncome = ((mean(MonthlyIncome)-MonthlyIncome)/sd(MonthlyIncome)), 
+                                      ZDailyRate = ((mean(DailyRate) - DailyRate)/sd(DailyRate)), 
+                                      ZMonthlyRate = ((mean(MonthlyRate)-MonthlyRate)/sd(MonthlyRate)))
+
+cols = c(&quot;BusinessTravel&quot;, &quot;Department&quot;, &quot;EducationField&quot;, &quot;OverTime&quot;, &quot;MaritalStatus&quot;)
+attritionFullTrain[cols] &lt;- lapply(attritionFullTrain[cols], as.factor)  </code></pre>
+<div id="attrition-prediciton" class="section level2">
+<h2>Attrition Prediciton</h2>
+<div id="variable-selection" class="section level3">
+<h3>Variable Selection</h3>
+<p>Below we are building a full model and reduced model built by Step Wise variable selection. This is using the data frame with only numeric variables, including all character variables dummy coded as 0 or 1 indicators. This allows us to build a faux linear regression model and use step wise variable selection. As shown by the summary this gives us a list of variables now assigned to the stepCols variable.</p>
+<pre class="r"><code>#Building a Faux Linear Model for Attrition, 
+library(MASS)
+#full.model &lt;- lm(Attrition_Yes ~., data = trainCodedNoChar )
+
+#Stepwise Var Selection
+#step.model &lt;- stepAIC(full.model, direction = &quot;both&quot;,  trace = FALSE)
+summary(step.model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Attrition_Yes ~ Age + DistanceFromHome + EnvironmentSatisfaction + 
+##     JobInvolvement + JobSatisfaction + NumCompaniesWorked + RelationshipSatisfaction + 
+##     TotalWorkingYears + TrainingTimesLastYear + WorkLifeBalance + 
+##     YearsInCurrentRole + YearsSinceLastPromotion + BusinessTravel_Travel_Frequently + 
+##     `EducationField_Technical Degree` + `EducationField_Human Resources` + 
+##     `JobRole_Manufacturing Director` + `JobRole_Sales Representative` + 
+##     MaritalStatus_Single + MaritalStatus_Married + OverTime_Yes, 
+##     data = trainCodedNoChar)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.58111 -0.19619 -0.07922  0.08110  1.11762 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                        0.752041   0.098716   7.618 6.86e-14
+## Age                               -0.003028   0.001637  -1.849  0.06474
+## DistanceFromHome                   0.003970   0.001341   2.960  0.00316
+## EnvironmentSatisfaction           -0.027271   0.009905  -2.753  0.00603
+## JobInvolvement                    -0.086342   0.015421  -5.599 2.91e-08
+## JobSatisfaction                   -0.044257   0.009776  -4.527 6.83e-06
+## NumCompaniesWorked                 0.019061   0.004717   4.041 5.80e-05
+## RelationshipSatisfaction          -0.022522   0.009867  -2.283  0.02270
+## TotalWorkingYears                 -0.006421   0.002273  -2.825  0.00484
+## TrainingTimesLastYear             -0.016616   0.008543  -1.945  0.05210
+## WorkLifeBalance                   -0.043621   0.015275  -2.856  0.00440
+## YearsInCurrentRole                -0.008482   0.003910  -2.169  0.03036
+## YearsSinceLastPromotion            0.016622   0.004249   3.912 9.89e-05
+## BusinessTravel_Travel_Frequently   0.060038   0.028420   2.112  0.03494
+## `EducationField_Technical Degree`  0.066749   0.038607   1.729  0.08418
+## `EducationField_Human Resources`   0.179016   0.083442   2.145  0.03220
+## `JobRole_Manufacturing Director`  -0.090882   0.036597  -2.483  0.01321
+## `JobRole_Sales Representative`     0.209792   0.047029   4.461 9.26e-06
+## MaritalStatus_Single               0.153928   0.030478   5.050 5.40e-07
+## MaritalStatus_Married              0.060218   0.028028   2.148  0.03196
+## OverTime_Yes                       0.208945   0.023931   8.731  &lt; 2e-16
+##                                      
+## (Intercept)                       ***
+## Age                               .  
+## DistanceFromHome                  ** 
+## EnvironmentSatisfaction           ** 
+## JobInvolvement                    ***
+## JobSatisfaction                   ***
+## NumCompaniesWorked                ***
+## RelationshipSatisfaction          *  
+## TotalWorkingYears                 ** 
+## TrainingTimesLastYear             .  
+## WorkLifeBalance                   ** 
+## YearsInCurrentRole                *  
+## YearsSinceLastPromotion           ***
+## BusinessTravel_Travel_Frequently  *  
+## `EducationField_Technical Degree` .  
+## `EducationField_Human Resources`  *  
+## `JobRole_Manufacturing Director`  *  
+## `JobRole_Sales Representative`    ***
+## MaritalStatus_Single              ***
+## MaritalStatus_Married             *  
+## OverTime_Yes                      ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.3168 on 849 degrees of freedom
+## Multiple R-squared:  0.2747, Adjusted R-squared:  0.2577 
+## F-statistic: 16.08 on 20 and 849 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>stepCols = c(&quot;Age&quot;, &quot;DistanceFromHome&quot;, &quot;EnvironmentSatisfaction&quot;, &quot;JobInvolvement&quot;, &quot;JobSatisfaction&quot;,
+             &quot;NumCompaniesWorked&quot;, &quot;RelationshipSatisfaction&quot;, &quot;TotalWorkingYears&quot;, &quot;TrainingTimesLastYear&quot;,
+             &quot;WorkLifeBalance&quot;,&quot;YearsInCurrentRole&quot;, &quot;YearsSinceLastPromotion&quot;, &quot;BusinessTravel&quot;, 
+             &quot;EducationField&quot;, &quot;JobRole&quot;, &quot;MaritalStatus&quot;,&quot;OverTime&quot;) </code></pre>
+</div>
+<div id="testing-the-naive-bayes-model" class="section level3">
+<h3>Testing the Naive Bayes Model</h3>
+<p>With the step wise selected columns we can build and test various models to determine if any variables are superfluous. After iteration and exploration we have the stepCols1 variable with a tested set of useful variables.</p>
+<pre class="r"><code>percentage = .8
+indices = sample(seq(1:dim(attritionFullTrain)[1]), round(dim(attritionFullTrain)[1]*percentage))
+attritionSplitTrain = attritionFullTrain[indices,]
+attritionSplitTest = attritionFullTrain[-indices,]
+
+#Test each version of the stepCols 
+maxspec = 0
+removeCol = &quot;&quot;
+for(i in stepCols){
+  newcols = stepCols
+  fitAttrition = naiveBayes(attritionSplitTrain[,newcols], as.factor(attritionSplitTrain$Attrition), laplace = 1, data = attritionSplitTrain) 
+  attritionPredict = predict(fitAttrition, attritionSplitTest[,newcols])
+  cm = confusionMatrix(table(attritionPredict, attritionSplitTest$Attrition ))
+  spec = cm$byClass[2]
+  if(spec &gt; maxspec){
+    maxspec = spec
+    removeCol = i
+  }
+}
+
+#With Trial and Error below is a good list to work within
+stepCols1 = c(&quot;Age&quot;, &quot;EnvironmentSatisfaction&quot;, &quot;JobInvolvement&quot;, &quot;JobSatisfaction&quot;,
+             &quot;NumCompaniesWorked&quot;, &quot;RelationshipSatisfaction&quot;, &quot;TotalWorkingYears&quot;, 
+             &quot;WorkLifeBalance&quot;,&quot;YearsInCurrentRole&quot;, &quot;YearsSinceLastPromotion&quot;, &quot;BusinessTravel&quot;, 
+             &quot;JobRole&quot;, &quot;MaritalStatus&quot;,&quot;OverTime&quot;, &quot;logMonthlyIncome&quot;) </code></pre>
+</div>
+<div id="building-a-knn-balanced-model" class="section level3">
+<h3>Building a KNN Balanced Model</h3>
+<p>Through exploratory analysis, KNN models were consistently limited due to the high number of employees who had not left. To combat this we built a model trained on a 50/50 split of employees having left and stayed with the company.</p>
+<pre class="r"><code>library(class)
+  #Balanced KNN Model
+  
+  trueYes = attritionFullTrain %&gt;% filter(Attrition == &quot;Yes&quot;)
+  trueNo = attritionFullTrain %&gt;% filter(Attrition == &quot;No&quot;) 
+  indicesNo = sample(seq(1:dim(trueNo)[1]), round(dim(trueYes)[1]))
+  trueNoSample = trueNo[indicesNo,]
+  balancedTotal = rbind(trueYes, trueNoSample) 
+  
+  
+  percentage = .8
+  indices = sample(seq(1:dim(balancedTotal)[1]), round(dim(balancedTotal)[1]*percentage))
+  balancedSplitTrain = balancedTotal[indices,]
+  balancedSplitTest = balancedTotal[-indices,]
+  
+  
+  #step based cols w/out char
+  knnColsStep = c(&quot;Age&quot;, &quot;EnvironmentSatisfaction&quot;, &quot;JobInvolvement&quot;, &quot;JobSatisfaction&quot;,
+                  &quot;NumCompaniesWorked&quot;, &quot;RelationshipSatisfaction&quot;, &quot;TotalWorkingYears&quot;, 
+                  &quot;WorkLifeBalance&quot;,&quot;YearsInCurrentRole&quot;, &quot;YearsSinceLastPromotion&quot;,&quot;logMonthlyIncome&quot;) 
+  
+  #Balanced KNN predict based on limited data set. 
+  Balanceknnpredict = knn(balancedSplitTrain[,knnColsStep], attritionSplitTest[,knnColsStep], balancedSplitTrain$Attrition, k = 5)</code></pre>
+</div>
+<div id="testing-an-ensemble-model" class="section level3">
+<h3>Testing an Ensemble Model</h3>
+<p>Below is both the Knn and Naive Bayes model in an ensemble model. After some testing including a simpler third KNN model, it was determined even combined an ensemble model was still returning low specificty with high sensitivity. To balance this, rather than have multiple models vote, the current ensemble model combines two good models of Naive Bayes and KNN and categorizes a prediction of Attrition as Yes if either of the two models categorizes it as Yes.</p>
+<p>This weighting is overestimating whether an employee leaves or not, at a cost to the sensitivity. However this results in a much more even combination of sensitivity and specificity with both measures often reaching .75 depending on the random sample.</p>
+<p>To test the reliability of this model, below it is run 1000 times with random sampling to ensure that the algorithm is not overfitted to a particular sample and reliably returns acceptable specificity and sensitivity rates.</p>
+<pre class="r"><code>library(class)
+sens = list()
+spec = list()
+for(j in seq(1:1000)){
+  percentage = .8
+  indices = sample(seq(1:dim(attritionFullTrain)[1]), round(dim(attritionFullTrain)[1]*percentage))
+  attritionSplitTrain = attritionFullTrain[indices,]
+  attritionSplitTest = attritionFullTrain[-indices,]
+
+  
+  stepCols1 = c(&quot;Age&quot;, &quot;EnvironmentSatisfaction&quot;, &quot;JobInvolvement&quot;, &quot;JobSatisfaction&quot;,
+                &quot;NumCompaniesWorked&quot;, &quot;RelationshipSatisfaction&quot;, &quot;TotalWorkingYears&quot;, 
+                &quot;WorkLifeBalance&quot;,&quot;YearsInCurrentRole&quot;, &quot;YearsSinceLastPromotion&quot;, &quot;BusinessTravel&quot;, 
+                &quot;JobRole&quot;, &quot;MaritalStatus&quot;,&quot;OverTime&quot;, &quot;logMonthlyIncome&quot;) 
+  
+  
+  fitAttrition = naiveBayes(attritionSplitTrain[,stepCols1], as.factor(attritionSplitTrain$Attrition),  laplace = 1, data = attritionSplitTrain) 
+  attritionPredict = predict(fitAttrition, attritionSplitTest[,stepCols1])
+  #confusionMatrix(table(attritionPredict, attritionSplitTest$Attrition ))
+  
+  #Balanced KNN Model
+  
+  trueYes = attritionFullTrain %&gt;% filter(Attrition == &quot;Yes&quot;)
+  trueNo = attritionFullTrain %&gt;% filter(Attrition == &quot;No&quot;) 
+  indicesNo = sample(seq(1:dim(trueNo)[1]), round(dim(trueYes)[1]))
+  trueNoSample = trueNo[indicesNo,]
+  balancedTotal = rbind(trueYes, trueNoSample) 
+  
+  
+  percentage = .8
+  indices = sample(seq(1:dim(balancedTotal)[1]), round(dim(balancedTotal)[1]*percentage))
+  balancedSplitTrain = balancedTotal[indices,]
+  balancedSplitTest = balancedTotal[-indices,]
+  
+  
+  #step based cols w/out char
+  knnColsStep = c(&quot;Age&quot;, &quot;EnvironmentSatisfaction&quot;, &quot;JobInvolvement&quot;, &quot;JobSatisfaction&quot;,
+                  &quot;NumCompaniesWorked&quot;, &quot;RelationshipSatisfaction&quot;, &quot;TotalWorkingYears&quot;, 
+                  &quot;WorkLifeBalance&quot;,&quot;YearsInCurrentRole&quot;, &quot;YearsSinceLastPromotion&quot;,&quot;logMonthlyIncome&quot;) 
+  
+  #Balanced KNN predict based on limited data set. 
+  Balanceknnpredict = knn(balancedSplitTrain[,knnColsStep], attritionSplitTest[,knnColsStep], balancedSplitTrain$Attrition, k = 5)
+  
+  #confusionMatrix(table(Balanceknnpredict,attritionSplitTest$Attrition))
+  
+  
+  
+  ensembleDF = data.frame(NB = attritionPredict, KNN = Balanceknnpredict)
+  for(i in seq(1:dim(ensembleDF)[1])){
+    score = 0
+    if(ensembleDF[i,1] == &quot;Yes&quot; | ensembleDF[i,2] == &quot;Yes&quot;){
+      ensembleDF$ensemblePredictions[i] = &quot;Yes&quot;
+    }
+    
+    else{ensembleDF$ensemblePredictions[i] = &quot;No&quot;}
+    
+  }
+  
+  table(ensembleDF$ensemblePredictions,attritionSplitTest$Attrition)
+  cm = confusionMatrix(table(ensembleDF$ensemblePredictions,attritionSplitTest$Attrition))
+  sens[j] = unname(cm$byClass[1], force = TRUE)
+  #print(cm$byClass[1])
+  spec[j] = cm$byClass[2]
+
+
+}
+hist(unlist(sens), main = &quot;Frequency of Sensitivities&quot;, xlab = &quot;Sensitivity&quot;)</code></pre>
+<p><img src="Salary-and-Attrition-Case-Study_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>hist(unlist(spec), main = &quot;Frequency of Specificities&quot;, xlab = &quot;Specificity&quot;)</code></pre>
+<p><img src="Salary-and-Attrition-Case-Study_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
+</div>
+<div id="salary-prediction" class="section level2">
+<h2>Salary Prediction</h2>
+<div id="exploratory-analysis-for-salary" class="section level3">
+<h3>Exploratory Analysis for Salary</h3>
+<p>With the correlation plot we can see some early useful variables with high correlation and build those into our salary prediction model.</p>
+<pre class="r"><code>#Correlation Plot for All variables coded.
+ggcorr(trainCodedNoChar, method = c(&quot;pairwise&quot;, &quot;pearson&quot;), size =  2, hjust = 1 , legend.position = &quot;bottom&quot;)</code></pre>
+<pre><code>## Warning in ggcorr(trainCodedNoChar, method = c(&quot;pairwise&quot;, &quot;pearson&quot;),
+## size = 2, : data in column(s) &#39;Attrition&#39;, &#39;BusinessTravel&#39;, &#39;Department&#39;,
+## &#39;EducationField&#39;, &#39;Gender&#39;, &#39;JobRole&#39;, &#39;MaritalStatus&#39;, &#39;Over18&#39;,
+## &#39;OverTime&#39; are not numeric and were ignored</code></pre>
+<pre><code>## Warning in cor(data, use = method[1], method = method[2]): the standard
+## deviation is zero</code></pre>
+<p><img src="Salary-and-Attrition-Case-Study_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>#Corr Variables for Salary
+cor(train$MonthlyIncome, train$TotalWorkingYears)</code></pre>
+<pre><code>## [1] 0.7785112</code></pre>
+<pre class="r"><code>#.778
+cor(train$MonthlyIncome, train$NumCompaniesWorked)</code></pre>
+<pre><code>## [1] 0.1558943</code></pre>
+<pre class="r"><code>#.156
+cor(train$MonthlyIncome, train$YearsAtCompany)</code></pre>
+<pre><code>## [1] 0.491379</code></pre>
+<pre class="r"><code>#.49
+cor(train$MonthlyIncome, train$Age)</code></pre>
+<pre><code>## [1] 0.4842883</code></pre>
+<pre class="r"><code>#.48
+cor(train$MonthlyIncome, train$JobLevel)</code></pre>
+<pre><code>## [1] 0.95164</code></pre>
+<pre class="r"><code>#.95</code></pre>
+</div>
+<div id="colinear-variables" class="section level3">
+<h3>Colinear Variables</h3>
+<p>TotalWorkingYears is the most correlated variable, but has a lot of the same information as Age, Years and YearsAtCompany. Below we look to see if adding those variables in helps our RMSE or if one is a better indicator alone.</p>
+<pre class="r"><code>#Splitting the Data into 80/20 to train and test the model 
+percentage = .8
+indices = sample(seq(1:dim(train)[1]), round(dim(train)[1]*percentage))
+splitTrain = train[indices,]
+splitTest = train[-indices,]
+
+
+#Cross Validating
+
+
+#Model 1  with Total Working Years
+fitSalary1 = lm(MonthlyIncome ~ TotalWorkingYears + Age  + JobLevel + JobRole  , splitTrain)
+predictSalary1 = predict(fitSalary1, splitTest)
+model1CV = data.frame(R2 = R2(predictSalary1, splitTest$MonthlyIncome), RMSE =  RMSE(predictSalary1, splitTest$MonthlyIncome), MAE = MAE(predictSalary1, splitTest$MonthlyIncome))
+
+#Model 2 with Years at Company
+fitSalary2 = lm(MonthlyIncome ~ YearsAtCompany  + JobLevel + JobRole  , splitTrain)
+predictSalary2 = predict(fitSalary2, splitTest)
+model2CV = data.frame(R2 = R2(predictSalary2, splitTest$MonthlyIncome), RMSE =  RMSE(predictSalary2, splitTest$MonthlyIncome), MAE = MAE(predictSalary2, splitTest$MonthlyIncome))
+
+#Model 3 with Age
+fitSalary3 = lm(MonthlyIncome ~ Age  + JobLevel + JobRole  , splitTrain)
+predictSalary3 = predict(fitSalary3, splitTest)
+model3CV = data.frame(R2 = R2(predictSalary3, splitTest$MonthlyIncome), RMSE =  RMSE(predictSalary3, splitTest$MonthlyIncome), MAE = MAE(predictSalary3, splitTest$MonthlyIncome))
+
+#As goal is prediction, lets check combonation
+fitSalary4 = lm(MonthlyIncome ~ TotalWorkingYears + YearsAtCompany + Age  + JobLevel + JobRole, splitTrain)
+predictSalary4 = predict(fitSalary4, splitTest)
+model4CV = data.frame(R2 = R2(predictSalary4, splitTest$MonthlyIncome), RMSE =  RMSE(predictSalary3, splitTest$MonthlyIncome), MAE = MAE(predictSalary3, splitTest$MonthlyIncome))
+
+model1CV</code></pre>
+<pre><code>##          R2     RMSE      MAE
+## 1 0.9472913 1046.235 769.8379</code></pre>
+<pre class="r"><code>model2CV</code></pre>
+<pre><code>##          R2     RMSE      MAE
+## 1 0.9499815 1018.837 751.8155</code></pre>
+<pre class="r"><code>model3CV</code></pre>
+<pre><code>##          R2     RMSE      MAE
+## 1 0.9502553 1016.694 749.6336</code></pre>
+<pre class="r"><code>model4CV</code></pre>
+<pre><code>##          R2     RMSE      MAE
+## 1 0.9471851 1016.694 749.6336</code></pre>
+</div>
+<div id="visualizing-salary-model" class="section level3">
+<h3>Visualizing Salary Model</h3>
+<p>We can take a visual look at how good our model is at predicting salary currently with the visualizations below.</p>
+<pre class="r"><code>fitSalaryfinal = lm(MonthlyIncome ~ TotalWorkingYears + Age  + JobLevel + JobRole + JobSatisfaction + MonthlyRate + Gender, splitTrain)
+predictSalaryfinal = predict(fitSalaryfinal, splitTest)
+modelCV = data.frame(R2 = R2(predictSalaryfinal, splitTest$MonthlyIncome), RMSE =  RMSE(predictSalaryfinal, splitTest$MonthlyIncome), MAE = MAE(predictSalaryfinal, splitTest$MonthlyIncome))
+
+modelDF = data.frame(Predicted = predictSalaryfinal, True = splitTest$MonthlyIncome, Residuals = (predictSalaryfinal-splitTest$MonthlyIncome), Index = seq(1:dim(splitTest)[1]))
+
+modelDF %&gt;% ggplot(aes(x = True, y = Predicted)) + geom_point() + ggtitle(&quot;Predicted by True&quot;)</code></pre>
+<p><img src="Salary-and-Attrition-Case-Study_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>modelDF %&gt;% ggplot(aes(x = Index,y = Residuals)) + geom_point() + ggtitle(&quot;Residuals&quot;)</code></pre>
+<p><img src="Salary-and-Attrition-Case-Study_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="prediction" class="section level1">
+<h1>Prediction</h1>
+<div id="finally-we-can-make-and-save-predictions-to-be-later-evaluated." class="section level3">
+<h3>Finally we can make and save predictions to be later evaluated.</h3>
+<pre class="r"><code>nosalaryTest = read_csv(&quot;CaseStudy2CompSet No Salary.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   Attrition = col_character(),
+##   BusinessTravel = col_character(),
+##   Department = col_character(),
+##   EducationField = col_character(),
+##   Gender = col_character(),
+##   JobRole = col_character(),
+##   MaritalStatus = col_character(),
+##   Over18 = col_character(),
+##   OverTime = col_character()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>noattritionTest = read.csv(&quot;CaseStudy2CompSet No Attrition.csv&quot;)
+
+noattritionTest  = noattritionTest %&gt;% mutate(logMonthlyIncome = log(MonthlyIncome))
+
+SalaryFitPrediction = lm(MonthlyIncome ~ TotalWorkingYears + Age  + JobLevel + JobRole + JobSatisfaction + MonthlyRate + Gender, train)
+predictSalaryfinal = predict(SalaryFitPrediction, nosalaryTest)
+
+SalaryPredictions = data.frame(ID = nosalaryTest$ID, MonthlyIncome = predictSalaryfinal)
+SalaryPredictions %&gt;% ggplot(aes(y = MonthlyIncome)) + geom_boxplot() + ggtitle(&quot;Distribution of Salary Predictions&quot;) + ylab(&quot;Monthly Income&quot;)</code></pre>
+<p><img src="Salary-and-Attrition-Case-Study_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>#Need to show summarys of predicted data
+
+fitAttrition = naiveBayes(attritionFullTrain[,stepCols1], as.factor(attritionFullTrain$Attrition),  laplace = 1, data = attritionFullTrain) 
+NBPrediction = predict(fitAttrition, noattritionTest[,stepCols1])
+
+#Balanced KNN Model
+  
+trueYes = attritionFullTrain %&gt;% filter(Attrition == &quot;Yes&quot;)
+trueNo = attritionFullTrain %&gt;% filter(Attrition == &quot;No&quot;) 
+indicesNo = sample(seq(1:dim(trueNo)[1]), round(dim(trueYes)[1]))
+trueNoSample = trueNo[indicesNo,]
+balancedTotal = rbind(trueYes, trueNoSample) 
+
+knnColsStep = c(&quot;Age&quot;, &quot;EnvironmentSatisfaction&quot;, &quot;JobInvolvement&quot;, &quot;JobSatisfaction&quot;,
+                  &quot;NumCompaniesWorked&quot;, &quot;RelationshipSatisfaction&quot;, &quot;TotalWorkingYears&quot;, 
+                  &quot;WorkLifeBalance&quot;,&quot;YearsInCurrentRole&quot;, &quot;YearsSinceLastPromotion&quot;,&quot;logMonthlyIncome&quot;) 
+    
+
+#Balanced KNN predict based on limited data set. 
+KnnPrediction = knn(balancedTotal[,knnColsStep], noattritionTest[,knnColsStep], balancedTotal$Attrition, k = 5)
+  
+  
+ensembleDF = data.frame(NB = NBPrediction, KNN = KnnPrediction)
+for(i in seq(1:dim(ensembleDF)[1])){
+  score = 0
+  if(ensembleDF[i,1] == &quot;Yes&quot; | ensembleDF[i,2] == &quot;Yes&quot;){
+      ensembleDF$ensemblePredictions[i] = &quot;Yes&quot;
+    }
+    
+  else{ensembleDF$ensemblePredictions[i] = &quot;No&quot;}
+    
+  }
+
+table(ensembleDF$ensemblePredictions)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 186 114</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
