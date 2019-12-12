@@ -1,5 +1,2 @@
-# megnn.github.io
+.
 
-SUP
-
-🐻
