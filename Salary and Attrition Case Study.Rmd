@@ -29,7 +29,9 @@ noattritionTest = read.csv("CaseStudy2CompSet No Attrition.csv")
 #Coding character variables as 0 or 1 and removing them from ds.
 #This data set can be used if we need numeric variables for everything
 trainCoded = dummy_cols(train, select_columns = c( "Attrition", "BusinessTravel", "Department", "EducationField", "Gender", "JobRole", "MaritalStatus", "Over18", "OverTime"), remove_first_dummy = TRUE)
-trainCodedNoChar = trainCoded
+trainCodedNoChar = trainCoded %>% dplyr::select(-c( "Attrition", "BusinessTravel", "Department", "EducationField", "Gender", "JobRole", "MaritalStatus", "Over18", "OverTime"))
+
+
 
 
 #Attrition Model Data
@@ -57,10 +59,10 @@ Below we are building a full model and reduced model built by Step Wise variable
 
 #Building a Faux Linear Model for Attrition, 
 library(MASS)
-#full.model <- lm(Attrition_Yes ~., data = trainCodedNoChar )
+full.model <- lm(Attrition_Yes ~., data = trainCodedNoChar )
 
 #Stepwise Var Selection
-#step.model <- stepAIC(full.model, direction = "both",  trace = FALSE)
+step.model <- stepAIC(full.model, direction = "both",  trace = FALSE)
 summary(step.model)
 
 stepCols = c("Age", "DistanceFromHome", "EnvironmentSatisfaction", "JobInvolvement", "JobSatisfaction",

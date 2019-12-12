@@ -348,7 +348,9 @@ train = read_csv(&quot;CaseStudy2-data.csv&quot;)</code></pre>
 #Coding character variables as 0 or 1 and removing them from ds.
 #This data set can be used if we need numeric variables for everything
 trainCoded = dummy_cols(train, select_columns = c( &quot;Attrition&quot;, &quot;BusinessTravel&quot;, &quot;Department&quot;, &quot;EducationField&quot;, &quot;Gender&quot;, &quot;JobRole&quot;, &quot;MaritalStatus&quot;, &quot;Over18&quot;, &quot;OverTime&quot;), remove_first_dummy = TRUE)
-trainCodedNoChar = trainCoded
+trainCodedNoChar = trainCoded %&gt;% dplyr::select(-c( &quot;Attrition&quot;, &quot;BusinessTravel&quot;, &quot;Department&quot;, &quot;EducationField&quot;, &quot;Gender&quot;, &quot;JobRole&quot;, &quot;MaritalStatus&quot;, &quot;Over18&quot;, &quot;OverTime&quot;))
+
+
 
 
 #Attrition Model Data
@@ -366,10 +368,10 @@ attritionFullTrain[cols] &lt;- lapply(attritionFullTrain[cols], as.factor)  </co
 <p>Below we are building a full model and reduced model built by Step Wise variable selection. This is using the data frame with only numeric variables, including all character variables dummy coded as 0 or 1 indicators. This allows us to build a faux linear regression model and use step wise variable selection. As shown by the summary this gives us a list of variables now assigned to the stepCols variable.</p>
 <pre class="r"><code>#Building a Faux Linear Model for Attrition, 
 library(MASS)
-#full.model &lt;- lm(Attrition_Yes ~., data = trainCodedNoChar )
+full.model &lt;- lm(Attrition_Yes ~., data = trainCodedNoChar )
 
 #Stepwise Var Selection
-#step.model &lt;- stepAIC(full.model, direction = &quot;both&quot;,  trace = FALSE)
+step.model &lt;- stepAIC(full.model, direction = &quot;both&quot;,  trace = FALSE)
 summary(step.model)</code></pre>
 <pre><code>## 
 ## Call:
@@ -582,10 +584,6 @@ hist(unlist(sens), main = &quot;Frequency of Sensitivities&quot;, xlab = &quot;S
 <p>With the correlation plot we can see some early useful variables with high correlation and build those into our salary prediction model.</p>
 <pre class="r"><code>#Correlation Plot for All variables coded.
 ggcorr(trainCodedNoChar, method = c(&quot;pairwise&quot;, &quot;pearson&quot;), size =  2, hjust = 1 , legend.position = &quot;bottom&quot;)</code></pre>
-<pre><code>## Warning in ggcorr(trainCodedNoChar, method = c(&quot;pairwise&quot;, &quot;pearson&quot;),
-## size = 2, : data in column(s) &#39;Attrition&#39;, &#39;BusinessTravel&#39;, &#39;Department&#39;,
-## &#39;EducationField&#39;, &#39;Gender&#39;, &#39;JobRole&#39;, &#39;MaritalStatus&#39;, &#39;Over18&#39;,
-## &#39;OverTime&#39; are not numeric and were ignored</code></pre>
 <pre><code>## Warning in cor(data, use = method[1], method = method[2]): the standard
 ## deviation is zero</code></pre>
 <p><img src="Salary-and-Attrition-Case-Study_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
@@ -641,16 +639,16 @@ model4CV = data.frame(R2 = R2(predictSalary4, splitTest$MonthlyIncome), RMSE =  
 
 model1CV</code></pre>
 <pre><code>##          R2     RMSE      MAE
-## 1 0.9472913 1046.235 769.8379</code></pre>
+## 1 0.9539599 1039.234 818.6515</code></pre>
 <pre class="r"><code>model2CV</code></pre>
 <pre><code>##          R2     RMSE      MAE
-## 1 0.9499815 1018.837 751.8155</code></pre>
+## 1 0.9509949 1072.599 848.1344</code></pre>
 <pre class="r"><code>model3CV</code></pre>
 <pre><code>##          R2     RMSE      MAE
-## 1 0.9502553 1016.694 749.6336</code></pre>
+## 1 0.9525776 1055.278 836.0721</code></pre>
 <pre class="r"><code>model4CV</code></pre>
 <pre><code>##          R2     RMSE      MAE
-## 1 0.9471851 1016.694 749.6336</code></pre>
+## 1 0.9538936 1055.278 836.0721</code></pre>
 </div>
 <div id="visualizing-salary-model" class="section level3">
 <h3>Visualizing Salary Model</h3>
@@ -733,7 +731,7 @@ for(i in seq(1:dim(ensembleDF)[1])){
 table(ensembleDF$ensemblePredictions)</code></pre>
 <pre><code>## 
 ##  No Yes 
-## 186 114</code></pre>
+## 193 107</code></pre>
 </div>
 </div>
 
